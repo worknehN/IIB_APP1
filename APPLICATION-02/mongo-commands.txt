@@ -1,0 +1,183 @@
+
+mongo
+use admin
+db.createUser({ user: "admin", pwd: "adminpwd", roles: [{ role: "userAdminAnyDatabase", db: "admin" }] })
+db.auth("admin", "adminpwd")
+db.createUser({ user: "iibuser", pwd: "iibuserpwd", roles: [{ role: "dbOwner", db: "IIBMONGO" }] })
+db.auth("iibuser","iibuserpwd")
+exit
+
+use worknehDB
+db.createUser({ user: "workneh", pwd: "worknehpwd", roles: [{ role: "dbOwner", db: "worknehDB" }] })
+db.auth("workneh","worknehpwd")
+exit
+
+mongo worknehDB -u workneh -p worknehpwd
+db.createCollection("Employee")
+show collections
+exit
+
+use worknehDB
+db.EMP.save( { name: "sriharsha" } )
+db.EMP.find()
+db.EMP.save( { name: "sidd" } )
+db.EMP.save( {_id: 100, name: "sidd" } )
+db.EMP.save( { _id:100, name: "fasil" } )
+
+# create user
+db.createUser({ user: "mongouser", pwd: "mongouserpwd", roles: [{ role: "dbOwner", db: "IIBDB" }] })
+# Authenticate urself with the created user credentials
+db.auth("mongouser","mongouserpwd")
+
+mongo DBMONGO1 -u mongouser -p mongouserpwd
+db.createCollection("Employee")
+show collections
+exit
+
+
+mongo DBMONGO01 -u iibuser -p 'iibuserpwd' --authenticationDatabase admin
+
+=========
+use admin
+db.auth("admin", "adminpwd")
+db.createUser({ user: "eventusr", pwd: "eventpwd", roles: [{ role: "dbOwner", db: "EVENTSDB" }] })
+use EVENTSDB
+db.auth("eventusr","eventpwd")
+show collections
+db.createCollection("eventlogs")
+exit
+mongo EVENTSDB -u eventusr -p eventpwd
+mongo-express -u eventusr -p eventpwd -d EVENTSDB
+=========
+
+use admin
+db.auth("admin", "adminpassword")
+
+use IIBMONGO
+db.createUser({ user: "iibuser", pwd: "iibuserpwd", roles: [{ role: "dbOwner", db: "IIBMONGO" }] })
+db.createUser({ user: "iibuser", pwd: "iibuserpwd", roles: [{ role: "dbOwner", db: "DBMONGO01" }] })
+db.auth("iibuser","iibuserpwd")
+show collections
+exit
+
+mongodb://youruser:yourpassword@localhost/yourdatabase
+
+mqsisetdbparms TESTNODE_Sriharsha -n loopback::iibmongodbsecid -u iibuser -p iibuserpwd
+
+
+
+db.createUser({ user: "mongouser", pwd: "mongouserpwd", roles: [{ role: "dbOwner", db: "DBMONGO1" }] })
+
+###########################################################################################
+
+IIB - MONDO SETUP
+
+C:>cd %MQSI_WORKPATH%\node_modules
+C:\ProgramData\IBM\MQSI\node_modules>npm install loopback-connector-mongodb --save
+
+mqsisetdbparms IIBNODE -n loopback::mongosecid -u iibuser -p iibuserpwd 
+
+
+#####################################################################################
+
+# MongoDB requires a data folder to store its files. The default location for the MongoDB data directory is c:\data\db.
+# For custoom data location; use :_
+mongod.exe --dbpath "S:\Apps\MongoDB\Data"
+
+# Better yet, set the configuration permanently in the config file.
+# Filename = mongod.cfg(Location mongodb install directory - 
+C:\Progra~1\MongoDB\Server\3.4)
+# Content
+------------------------------------------------
+systemLog:
+    destination: file
+    path: S:\Apps\MongoDB\Data\log\mongod.log
+storage:
+    dbPath: S:\Apps\MongoDB\Data\db
+------------------------------------------------
+
+#####################################################################################
+
+# open Mongo client -> Console
+mongo
+# By default it connects to a databse named "test"
+# to know which database we are connected to :-
+db
+# list all databases :-
+show dbs
+# For help & list of commands use :-
+db.help()
+# show db stastics
+db.stats()
+
+# To create database:- use <DBNAME>
+use DBMONGO1
+
+# create user
+db.createUser({ user: "mongouser", pwd: "mongouserpwd", roles: [{ role: "dbOwner", db: "IIBDB" }] })
+# Authenticate urself with the created user credentials
+db.auth("mongouser","mongouserpwd")
+
+mongo DBMONGO1 -u mongouser -p mongouserpwd
+
+#####################################################################################
+# Collection (Equavalent to TABLE in RDBMS)
+# show list of collections
+show collections
+# create a collection.
+db.createCollection(<name>, <options>) 
+ex: db.createCollection("mycollection")
+db.createCollection("mycol", { capped : true, autoIndexId : true, size : 6142800, max : 10000 } )
+#Insert a record / Also create a collection if not exists - "friends" is colection name
+db.EMP.save( { name: "sriharsha" } )
+db.EMP.find()
+db.EMP.save( { name: "sidd" } )
+db.EMP.save( {_id: 100, name: "sidd" } )
+db.EMP.save( { _id:100, name: "fasil" } )
+db.EMP.save( { 
+_id:101, 
+name: "tash" 
+} )
+db.test.find()
+
+db.stats()
+
+######################################################################################
+# Insert to collections (a ROW to TABLE)
+db.nosql.insert( { title: "MongoDB Overview", description: "MongoDB is no sql database",  by: "MongoDB, Inc",  url: "https://www.mongodb.com/",  tags: ["mongodb", "database", "NoSQL"],   likes: 100 })
+# Insert multiple documents (as in ROWS to TABLE)
+db.nosql.insert([
+   {
+      title: "Cloudant Overview", 
+      description: "Cloudant DB is no sql database",
+      by: "IBM",
+      url: "https://www.ibm.com/ms-en/marketplace/database-management",
+      tags: ['cloudant', 'DBEngine', 'NoSQL'],
+      likes: 100
+   }
+	
+   {
+      title: 'Cassandra Database', 
+      description: "NoSQL database doesn't have tables",
+      by: 'Apache Software Foundation',
+      url: 'http://cassandra.apache.org/',
+      tags: ['cassandra', 'apache', 'NoSQL', 'OpenSource'],
+      likes: 200, 
+      comments: [	
+         {
+            feature: 'scalable, decentralized, performant, & fault tolerant',
+            usedby: 'COmsat, ebay, Github, GoDayy, Netflix'
+         }
+      ]
+   }
+])
+######################################################################################
+# To find documents (as a SELECT statement in RDBMS)
+db.nosql.find()
+db.nosql.find().pretty()
+db.nosql.find({"by":"IBM"}).pretty()
+db.nosql.find({"likes":{$gt:100}}).pretty()
+
+
+
+
