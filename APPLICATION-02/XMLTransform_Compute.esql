@@ -3,7 +3,11 @@
 CREATE COMPUTE MODULE XMLTransform_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
-		
+		--SET OutputRoot.XMLNSC.Company.Employees.EmployeeName.FirstName = InputRoot.XMLNSC.Employee.FirstName;
+--	SET OutputRoot.XMLNSC.Company.Employees.EmployeeName.LastName = InputRoot.XMLNSC.Employee.LastName;
+--	SET OutputRoot.XMLNSC.Company.Employees.Contacts.Mobile = InputRoot.XMLNSC.Employee.Mobile;
+--	SET OutputRoot.XMLNSC.Company.Employees.Contacts.Email = InputRoot.XMLNSC.Employee.Email;
+--	SET OutputRoot.XMLNSC.Company.Employees.Salary = InputRoot.XMLNSC.Employee.Salary;
 		--Transformin XML format to XML format
 --	SET OutputRoot.XMLNSC.Company.Employees.EmployeeName.FirstName = InputRoot.XMLNSC.Employee.FirstName;
 --	SET OutputRoot.XMLNSC.Company.Employees.EmployeeName.LastName = InputRoot.XMLNSC.Employee.LastName;
