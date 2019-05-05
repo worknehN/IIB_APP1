@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="IIB-CI-MAIN" default="dev" basedir="..">
    <description>IIB Continuous Integration Demo (main script)</description>
+   <!--SVN Command Line Demo Test-->
    <target name="init">
       <tstamp />
       <property environment="env" />
